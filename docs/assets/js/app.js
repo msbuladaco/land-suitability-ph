@@ -67,7 +67,7 @@
       time: 'Sep 2026 – Mar 2027 · Criteria list and weights', people: 'Marcial S. Buladaco II (Study Leader) · Jessabel B. Magtoltol' },
     { n: 5, title: 'GIS-based Suitability Analysis of Selected Crops', status: 'wip', svg: reclassSvg(),
       text: 'Criteria rasters reclassified 1–5 (N2 to S1) and combined by weighted overlay in ArcGIS Pro ModelBuilder to produce actual and potential suitability maps, with recommendations for limitations.',
-      time: 'Mar – Dec 2027 · Suitability models, reclassified rasters, maps', people: 'Marcial S. Buladaco II (Study Leader) · Joana Camille G. Codera' }
+      time: 'Mar – Dec 2027 · Suitability models, reclassified rasters, maps', people: 'Marcial S. Buladaco II (Study Leader) · Sophia Alelie C. Bugia' }
   ];
   $('#study-grid').innerHTML = STUDIES.map((s) => `
     <article class="study ${s.status}">
@@ -378,7 +378,7 @@
     ['Jessabel B. Magtoltol', 'Study Leader, Study 1 · Project Staff, Studies 3–4'],
     ['Hiyasmin Rose L. Benzon', 'Co-Study Leader, Study 1'],
     ['Darryl Nelo S. Aguila', 'Project Staff, Study 2'],
-    ['Joana Camille G. Codera', 'Project Staff, Study 5']
+    ['Sophia Alelie C. Bugia', 'Project Staff, Study 5']
   ];
   $('#team-grid').innerHTML = TEAM.map(([n, r]) => {
     const parts = n.replace(/\b(II|Jr\.)\b/g, '').trim().split(/\s+/);
