@@ -4,13 +4,14 @@
 
 Division of Soil Science · Agricultural Systems Institute · College of Agriculture and Food Science · University of the Philippines Los Baños (2025–2027)
 
-This repository hosts the project showcase website. It currently publishes the results of **Study 1: Compendium of Land Utilization Type Requirements**: FAO suitability class thresholds (S1, S2, S3, N1, N2) for 17 major crops. Studies 2–5 are in progress.
+This repository hosts the project showcase website. It currently publishes the results of **Study 1: Compendium of Land Utilization Type Requirements**: FAO suitability class thresholds (S1, S2, S3, N1, N2) for 17 major crops. It also presents the initial results of **Study 3**: interpolated annual precipitation and mean temperature surfaces, with a cross-validation comparison of 14 interpolation methods. Studies 2, 4 and 5 are in progress.
 
 ## Website features
 
 - **Crop compendium**: 17 crop profiles (lowland and upland rice, corn, coffee, cacao, coconut, sugarcane, mango, banana, pineapple, cabbage, carrot, tomato, onion, cassava, sweet potato, potato). Each profile has its S1–N2 requirement table, compiler notes and sources, a summary, and the full technical discussion.
 - **Cross-crop comparison**: an interactive range chart, with a table view, for pH, temperature, rainfall, soil depth, slope, organic carbon, CEC, base saturation, salinity and dry-season length.
-- **Downloads**: all 173 crop–factor records as CSV, plus a CSV for each crop.
+- **Study 3 climate surfaces**: EBK maps of annual precipitation and mean temperature, recreated cross-validation tables (sortable, downloadable), an RMSE chart, a scientific discussion, and a check of each crop's S1 climate range against the interpolated ranges.
+- **Downloads**: all 173 crop–factor records as CSV, plus a CSV for each crop and for each Study 3 error table.
 - **Project overview**: objectives, how the five studies connect, status of each study, the team, and 74 searchable references.
 
 ## Structure

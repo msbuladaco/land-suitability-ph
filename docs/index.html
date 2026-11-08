@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=4">
+<link rel="stylesheet" href="assets/css/style.css?v=5">
 </head>
 <body>
 
@@ -28,6 +28,7 @@
       <a href="#compendium">Study 1</a>
       <a href="#compare">Compare</a>
       <a href="#methods">Methods</a>
+      <a href="#climate">Study 3</a>
       <a href="#references">References</a>
     </nav>
   </div>
@@ -97,7 +98,7 @@
         <div class="flow-tag">Datasets &amp; layers</div>
         <div class="flow-node s1 done"><b>Study 1</b>Crop requirements<small>Validation &amp; standardization of class thresholds</small></div>
         <div class="flow-node s2"><b>Study 2</b>Satellite images<small>Land cover &amp; vegetation (NDVI) criteria</small></div>
-        <div class="flow-node s3"><b>Study 3</b>Weather, DEM &amp; soil data<small>Climate, topographic &amp; soil criteria</small></div>
+        <div class="flow-node s3 partial"><b>Study 3</b>Weather, DEM &amp; soil data<small>Climate, topographic &amp; soil criteria</small></div>
       </div>
       <div class="flow-arrow" aria-hidden="true"><svg viewBox="0 0 40 24"><path d="M2 12h32m-8-8 8 8-8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div class="flow-col">
@@ -248,10 +249,128 @@
   </div>
 </section>
 
-<!-- ============ REFERENCES ============ -->
-<section id="references" class="section alt">
+<!-- ============ STUDY 3 ============ -->
+<section id="climate" class="section alt">
   <div class="wrap">
-    <p class="kicker">Evidence base</p>
+    <p class="kicker">Study 3 · Initial results (January – August 2025)</p>
+    <h2>Interpolated climate surfaces for the Philippines</h2>
+    <div class="two-col narrow-right">
+      <div>
+        <p>Climate criteria for crop suitability need continuous surfaces, but weather is measured only at scattered stations. Study 3 turns PAGASA climatological normals into nationwide maps of <strong>annual precipitation</strong> and <strong>mean temperature</strong>, then picks the most accurate interpolation method for each variable by cross-validation.</p>
+        <p>Fourteen model configurations from six method families were compared: two geostatistical families (Empirical Bayesian Kriging and Ordinary Kriging) and four deterministic ones (Inverse Distance Weighted, Radial Basis Functions, Kernel Interpolation and Global Polynomial Interpolation). Each was scored on root mean square error (RMSE), mean error, mean standardized error, root mean square standardized error, average standard error, maximum absolute error and percent error reduction.</p>
+        <p class="lead-by">Study leader: <strong>Marcial S. Buladaco II</strong> · Project staff: <strong>Jessabel B. Magtoltol</strong></p>
+      </div>
+      <aside class="kpi-stack" aria-label="Key results">
+        <div class="kpi best"><span class="kpi-lbl">Best method for both variables</span><span class="kpi-val sm">Empirical Bayesian Kriging (Advanced)</span></div>
+        <div class="kpi"><span class="kpi-lbl">Annual precipitation</span><span class="kpi-val">684.9 <small>mm RMSE</small></span><span class="kpi-sub">19.04% error reduction · rank 1 of 14</span></div>
+        <div class="kpi"><span class="kpi-lbl">Mean temperature</span><span class="kpi-val">1.417 <small>°C RMSE</small></span><span class="kpi-sub">5.88% error reduction · rank 1 of 14</span></div>
+      </aside>
+    </div>
+
+    <div class="s3-switch">
+      <div class="seg" role="group" aria-label="Climate variable" id="s3-var">
+        <button type="button" class="active" data-var="precip" aria-pressed="true">Annual precipitation</button>
+        <button type="button" data-var="temp" aria-pressed="false">Mean temperature</button>
+      </div>
+    </div>
+
+    <div class="s3-result">
+      <figure class="s3-map">
+        <button type="button" class="map-zoom" id="s3-map-btn" aria-label="Enlarge map">
+          <img id="s3-map" src="assets/img/study3/annual-precipitation-ebk.jpg" alt="" width="938" height="825">
+          <span class="zoom-hint" aria-hidden="true">Click to enlarge</span>
+        </button>
+        <figcaption id="s3-map-cap"></figcaption>
+      </figure>
+      <div class="s3-side">
+        <h3 id="s3-title">Annual precipitation</h3>
+        <ul class="s3-highlights" id="s3-highlights"></ul>
+        <h4 class="s3-h4">RMSE by method <span class="muted">(lower is better)</span></h4>
+        <ul class="legend inline" aria-label="Method type legend">
+          <li><span class="dot geo"></span>Geostatistical</li>
+          <li><span class="dot det"></span>Deterministic</li>
+        </ul>
+        <div id="s3-chart" class="s3-chart"></div>
+      </div>
+    </div>
+
+    <h3 class="sub" id="s3-table-title">Table 1. Error estimates of tested interpolation methods for annual precipitation</h3>
+    <p class="muted small">Cross-validation statistics as reported. Click a column heading to sort. “—” = not produced by that method (deterministic methods give no prediction standard errors). The best model is highlighted.</p>
+    <div class="table-wrap"><table class="s3-table" id="s3-table"></table></div>
+    <button type="button" class="btn btn-outline s3-dl" id="s3-dl">Download this table (CSV)</button>
+
+    <details class="glossary">
+      <summary>How to read the cross-validation statistics</summary>
+      <dl>
+        <dt>RMSE: root mean square error</dt><dd>Typical size of the prediction error, in the variable’s units. Smaller is better.</dd>
+        <dt>ME: mean error</dt><dd>Average of predicted minus observed. Close to 0 means no systematic over- or under-prediction.</dd>
+        <dt>MSE: mean standardized error</dt><dd>Mean error divided by each prediction’s standard error. Should be close to 0.</dd>
+        <dt>RMSSE: root mean square standardized error</dt><dd>Should be close to 1. Above 1, the model underestimates its own uncertainty; below 1, it overestimates it.</dd>
+        <dt>ASE: average standard error</dt><dd>The model’s own estimate of its error. When it is close to the RMSE, the uncertainty maps can be trusted.</dd>
+        <dt>Max |error|: maximum absolute error</dt><dd>The single worst station prediction. It flags stations that differ sharply from their neighbors.</dd>
+        <dt>Percent error reduction</dt><dd>RMSE improvement relative to a common reference model. Negative values mean the configuration did worse than that reference.</dd>
+      </dl>
+    </details>
+
+    <article class="discussion" id="s3-discussion">
+      <h3 class="sub">Scientific discussion</h3>
+      <p class="muted small disclaimer">This discussion interprets the results in the January–August 2025 progress report. Points marked <span class="tag-rec">Recommendation</span> go beyond the report and are offered for the study team’s review.</p>
+
+      <h4>1. Why Empirical Bayesian Kriging performed best</h4>
+      <p>Classical kriging fits one semivariogram to the whole dataset and treats it as exact. Empirical Bayesian Kriging (EBK) instead splits the data into overlapping local subsets, simulates many semivariograms within each, and averages over them. The uncertainty of the spatial model itself is therefore carried into the predictions and their standard errors (Krivoruchko, 2012). This suits Philippine climate data well. Stations are irregularly spaced across an archipelago and cluster on lowland coasts, and the climate field is non-stationary: rainfall regimes change sharply across mountain ranges and between the Pacific-facing and West Philippine Sea-facing coasts. A single global model, as in ordinary kriging or global polynomial interpolation, has to compromise across these regimes, while EBK’s local models do not.</p>
+      <p>The advantage was largest for precipitation, where spatial structure is most heterogeneous. EBK (Advanced) lowered RMSE by 3.2% compared with the next-best model, optimized ordinary kriging (684.9 vs 707.5 mm). Tuning mattered as much as method choice: the Advanced configuration beat default EBK by 4.1% for precipitation and 6.1% for temperature, and default EBK ranked only 5th and 10th respectively.</p>
+
+      <h4>2. What the diagnostics say about reliability</h4>
+      <p>These cross-validation statistics come from withholding each station in turn and predicting it from the others. For precipitation, EBK (Advanced) is close to ideal on every diagnostic. Its mean standardized error (−0.013) indicates no bias. Its RMSSE (0.995) and average standard error (683.3 mm, against an RMSE of 684.9 mm) show the model’s stated uncertainty matches its actual error almost exactly. In practice, its prediction-standard-error surface can be used directly to flag where a province’s rainfall class is uncertain. Ordinary kriging slightly overstated its uncertainty (RMSSE 0.96–0.97). Kernel interpolation had the smallest worst-case error (2,058 mm) but the largest bias (+66.6 mm).</p>
+      <p>For temperature, EBK (Advanced) is also well calibrated (RMSSE 1.047, ASE 1.52 °C, RMSE 1.42 °C), while kernel interpolation and optimized ordinary kriging overstated uncertainty (RMSSE ≈ 0.92–0.93). The percent-error-reduction values imply a common reference RMSE of about 846 mm for precipitation and 1.51 °C for temperature. Seven temperature configurations scored below that reference, the thin plate spline worst at −27%. The thin plate spline ranked last for both variables, consistent with its tendency to overshoot between sparse, irregular stations.</p>
+      <p class="rec"><span class="tag-rec">Recommendation</span> The final report should name the reference model behind percent error reduction, the number of stations, and the climatological normal period used, so the metrics can be reproduced.</p>
+
+      <h4>3. Rainfall pattern: monsoon exposure and orography</h4>
+      <p>The precipitation surface runs from about 1,034 to 4,115 mm. The wettest provinces, above 3,389 mm, line the eastern seaboard (eastern Luzon and Bicol, Samar and eastern Mindanao). These coasts face the Pacific, receive the northeast monsoon and trade-wind flow, sit on the main typhoon tracks, and are lifted against the Sierra Madre and the eastern Mindanao ranges. Western Luzon is also wet (about 2,600–3,400 mm), consistent with the southwest monsoon striking the Zambales and Cordillera ranges. The driest areas, southern Palawan and parts of western and southern Mindanao, lie in rain shadows and largely south of the typhoon belt.</p>
+      <p>Annual totals hide seasonality, which differs sharply across the country: a pronounced dry season on western coasts versus year-round rain on eastern coasts (the Modified Coronas climate types used by PAGASA). An RMSE of about 685 mm is also wide compared with several crop rainfall bands from Study 1. Maize, for example, has an S1 band of 850–1,200 mm, only 350 mm wide. Rainfall class boundaries near those thresholds therefore carry real uncertainty.</p>
+      <p class="rec"><span class="tag-rec">Recommendation</span> Interpolate monthly normals as well. Study 1 uses dry-season length for seven crops, and growing-cycle rainfall for cabbage and onion, so annual totals alone cannot evaluate those criteria.</p>
+
+      <h4>4. Temperature pattern: a compressed range and the elevation problem</h4>
+      <p>The interpolated temperature surface spans only 3.3 °C (25.4–28.7 °C), and much of the country falls within a single 1 °C band (27.3–28.1 °C). Cooler values appear in northern Luzon and the Cordillera, and the warmest in Palawan, Sulu and western Mindanao. Real temperatures vary more than this. Air cools by roughly 6.5 °C per kilometre of elevation, so highland stations such as Baguio, at about 1,500 m, are several degrees cooler than any value on the map. Interpolation from a few highland stations smooths those values into their warmer lowland neighbors.</p>
+      <p>Two numbers in Table 2 point the same way. Every method has a maximum absolute error of 7.5–8.1 °C, the signature of a few stations very unlike their neighbors. And the top ten configurations differ in RMSE by less than 0.1 °C. The limiting factor for temperature is not the choice of interpolator but a missing covariate: elevation.</p>
+      <p class="rec"><span class="tag-rec">Recommendation</span> Use the DEM that Study 3 is already processing as a covariate, through regression kriging or EBK Regression Prediction (Hengl et al., 2007). Alternatively, reduce station temperatures to sea level with a lapse rate, interpolate, and re-apply the lapse rate on the DEM. Either approach should recover highland cooling and sharply reduce the maximum error.</p>
+
+      <h4>5. What this means for crop suitability</h4>
+      <p>The table below matches each crop’s Study 1 S1 climate range against the interpolated national range. Rainfall is rarely a hard barrier: every crop with an annual rainfall criterion has an S1 band that overlaps the 1,034–4,115 mm surface, except carrot, whose 700–800 mm band falls below even the driest interpolated value. For maize, mango and tomato, however, the S1 upper limit (1,200–1,500 mm) sits at the dry end, so S1 rainfall for them will be confined to the driest provinces. Temperature behaves very differently. Cacao, coffee, sugarcane, sweet potato and potato all have S1 temperature ranges below 25.4 °C, so no part of the current surface would be rated S1 for them. Yet cacao is grown commercially in Davao, and coffee and potato in the Cordillera and Bukidnon highlands. This reflects the smoothed temperature surface, not the crops, and it is the main reason an elevation-adjusted temperature layer is needed before the Study 5 overlay.</p>
+      <div class="table-wrap"><table class="fit-table" id="s3-fit"></table></div>
+      <p class="muted small">Ranges compared: interpolated mean temperature 25.4–28.7 °C and annual precipitation 1,034–4,115 mm (EBK Advanced). “Covers whole range” means every interpolated value falls in the crop’s S1 band; “Inside range” means the S1 band lies entirely within the interpolated values. Criteria defined over a crop’s growing cycle rather than a year are marked and are not directly comparable with annual surfaces.</p>
+
+      <h4>6. Next steps</h4>
+      <ul class="cautions">
+        <li><b>From the report:</b> integrate the surfaces into the suitability models, cross-validate against independent station data, and link the climate surfaces with socio-economic and biophysical datasets for vulnerability and risk assessment.</li>
+        <li><b>From the report’s schedule:</b> process secondary soil and topographic data (slope and elevation from a DEM; pH, organic matter, texture, depth and other soil properties).</li>
+        <li><span class="tag-rec">Recommendation</span> Produce elevation-adjusted temperature, monthly or growing-season surfaces, and maps of prediction standard error, so suitability maps can show where class assignments are uncertain.</li>
+      </ul>
+
+      <h4 class="refs-h">References for this discussion</h4>
+      <ul class="refs short">
+        <li>Hengl, T., Heuvelink, G. B. M., &amp; Rossiter, D. G. (2007). About regression-kriging: From equations to case studies. <i>Computers &amp; Geosciences</i>, 33(10), 1301–1315. <a href="https://doi.org/10.1016/j.cageo.2007.05.001" target="_blank" rel="noopener">doi.org/10.1016/j.cageo.2007.05.001</a></li>
+        <li>Krivoruchko, K. (2012). Empirical Bayesian Kriging: Implemented in ArcGIS Geostatistical Analyst. <i>ArcUser</i>, Fall 2012, 6–10. Esri.</li>
+        <li>Oliver, M. A., &amp; Webster, R. (2014). A tutorial guide to geostatistics: Computing and modelling variograms and kriging. <i>Catena</i>, 113, 56–69. <a href="https://doi.org/10.1016/j.catena.2013.09.006" target="_blank" rel="noopener">doi.org/10.1016/j.catena.2013.09.006</a></li>
+        <li>PAGASA. Climate of the Philippines (Modified Coronas climate classification). Philippine Atmospheric, Geophysical and Astronomical Services Administration. <a href="https://www.pagasa.dost.gov.ph/information/climate-philippines" target="_blank" rel="noopener">pagasa.dost.gov.ph</a></li>
+      </ul>
+      <p class="muted small">Source of results: Progress Report, Core-Funded Project ID 20195, January–August 2025. Tables 1 and 2 were images in the report and have been re-typed here from it.</p>
+    </article>
+  </div>
+</section>
+
+<!-- Map lightbox -->
+<dialog id="map-dialog" class="map-dialog" aria-label="Enlarged map">
+  <button class="dlg-close" id="map-close" aria-label="Close enlarged map">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+  </button>
+  <img id="map-big" src="" alt="">
+</dialog>
+
+<!-- ============ REFERENCES ============ -->
+<section id="references" class="section">
+  <div class="wrap">
+    <p class="kicker">Study 1 · Evidence base</p>
     <h2>References</h2>
     <label class="search wide">
       <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
@@ -263,7 +382,7 @@
 </section>
 
 <!-- ============ TEAM ============ -->
-<section id="team" class="section">
+<section id="team" class="section alt">
   <div class="wrap">
     <p class="kicker">People</p>
     <h2>Project team</h2>
@@ -313,7 +432,8 @@
   </div>
 </dialog>
 
-<script src="assets/js/data.js?v=4"></script>
-<script src="assets/js/app.js?v=4"></script>
+<script src="assets/js/data.js?v=5"></script>
+<script src="assets/js/study3.js?v=5"></script>
+<script src="assets/js/app.js?v=5"></script>
 </body>
 </html>

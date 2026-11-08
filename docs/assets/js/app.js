@@ -59,9 +59,9 @@
     { n: 2, title: 'Land Use/Land Cover Classification', status: 'wip', img: 'assets/img/study-2.jpg', alt: 'Cloud-free Sentinel-2 satellite mosaic of Mindanao',
       text: 'Unsupervised and supervised pixel-based or object-based classification of Landsat-8, Sentinel-2 and high-resolution imagery to map land cover and NDVI per province.',
       time: 'Aug 2025 – Jun 2026 · Land cover & NDVI maps (provincial)', people: 'Nicola Louise T. Timbas (Study Leader) · Darryl Nelo S. Aguila' },
-    { n: 3, title: 'Interpolation of Climatic Parameters & Processing of Soil and Topographic Data', status: 'wip', img: 'assets/img/study-3.jpg', alt: 'Automatic weather station with anemometer and sensors',
-      text: 'DOST-PAGASA climatological normals interpolated with deterministic (LPI, GPI, IDW, RBF) and geostatistical (ordinary kriging) methods; DEM-derived slope and elevation plus secondary soil layers.',
-      time: 'Mar – Aug 2026 · Cross-validation reports, climate surfaces', people: 'Marcial S. Buladaco II (Study Leader) · Jessabel B. Magtoltol' },
+    { n: 3, title: 'Interpolation of Climatic Parameters & Processing of Soil and Topographic Data', status: 'partial', img: 'assets/img/study3/annual-precipitation-ebk.jpg', alt: 'Interpolated annual precipitation map of the Philippines', imgPos: '30% 35%;transform:scale(1.6);transform-origin:30% 42%',
+      text: 'PAGASA climatological normals interpolated with 14 geostatistical and deterministic models. Empirical Bayesian Kriging gave the most accurate annual precipitation and mean temperature surfaces. Soil and topographic layers come next.',
+      time: 'Jan – Aug 2025 progress · Climate surfaces & cross-validation results', people: 'Marcial S. Buladaco II (Study Leader) · Jessabel B. Magtoltol', link: '#climate' },
     { n: 4, title: 'Derivation of Criteria and Sub-Criteria Weights using AHP and Fuzzy-AHP', status: 'wip', svg: ahpSvg(),
       text: 'Nine-point AHP pairwise comparisons from expert surveys/FGDs in SuperDecisions, accepted when the consistency ratio is ≤ 0.10. Fuzzy-AHP is also explored.',
       time: 'Sep 2026 – Mar 2027 · Criteria list and weights', people: 'Marcial S. Buladaco II (Study Leader) · Jessabel B. Magtoltol' },
@@ -72,15 +72,15 @@
   $('#study-grid').innerHTML = STUDIES.map((s) => `
     <article class="study ${s.status}">
       <div class="study-media">
-        ${s.img ? `<img src="${s.img}" alt="${esc(s.alt)}" loading="lazy">` : s.svg}
-        <span class="badge ${s.status}"><span class="dot"></span>${s.status === 'done' ? 'Completed · results available' : 'Work in progress'}</span>
+        ${s.img ? `<img src="${s.img}" alt="${esc(s.alt)}" loading="lazy"${s.imgPos ? ` style="object-position:${s.imgPos}"` : ''}>` : s.svg}
+        <span class="badge ${s.status}"><span class="dot"></span>${{ done: 'Completed · results available', partial: 'In progress · initial results' }[s.status] || 'Work in progress'}</span>
       </div>
       <div class="study-body">
         <span class="study-num">Study ${s.n}</span>
         <h3>${esc(s.title)}</h3>
         <p>${esc(s.text)}</p>
         <p class="timeline"><strong>Timeline:</strong> ${esc(s.time)}</p>
-        ${s.link ? `<a class="study-link" href="${s.link}">View the results →</a>` : ''}
+        ${s.link ? `<a class="study-link" href="${s.link}">${s.status === 'partial' ? 'View the initial results →' : 'View the results →'}</a>` : ''}
         <p class="people">${esc(s.people)}</p>
       </div>
     </article>`).join('');
@@ -389,6 +389,151 @@
   /* ---------------- credits ---------------- */
   const LABEL = { hero: 'Hero', terraces: 'Project section', 'study-1': 'Study 1', 'study-2': 'Study 2', 'study-3': 'Study 3' };
   const cropName = Object.fromEntries(D.crops.map((c) => [c.id, c.name]));
-  $('#credit-list').innerHTML = Object.entries(D.credits).filter(([k]) => k !== 'study-3b').map(([k, c]) =>
-    `<li><b>${esc(LABEL[k] || cropName[k] || k)}:</b> <a href="${esc(c.page)}" target="_blank" rel="noopener">${esc(c.title)}</a> · ${esc(c.artist.replace(/\s+/g, ' '))} · ${esc(c.license)}</li>`).join('');
+  $('#credit-list').innerHTML = Object.entries(D.credits).filter(([k]) => k !== 'study-3b' && k !== 'study-3').map(([k, c]) =>
+    `<li><b>${esc(LABEL[k] || cropName[k] || k)}:</b> <a href="${esc(c.page)}" target="_blank" rel="noopener">${esc(c.title)}</a> · ${esc(c.artist.replace(/\s+/g, ' '))} · ${esc(c.license)}</li>`).join('') +
+    '<li><b>Study 3 maps:</b> project output; basemap © Earthstar Geographics</li>';
+
+  /* ---------------- Study 3: climate interpolation ---------------- */
+  const S3 = window.STUDY3;
+  if (S3) initStudy3(S3);
+  function initStudy3(S3) {
+    let cur = 'precip', sortKey = 2, sortDir = 1;
+    const fmtN = (v, d) => (v == null ? '<span class="muted">—</span>' :
+      (v < 0 ? '−' : '') + Math.abs(v).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }));
+    const isGeo = (fam) => S3.geostatistical.includes(fam);
+
+    function render() {
+      const V = S3.variables[cur];
+      const tableNo = cur === 'precip' ? 1 : 2;
+      $('#s3-title').textContent = V.label;
+      $('#s3-map').src = V.map; $('#s3-map').alt = V.mapAlt;
+      $('#s3-map-cap').innerHTML = `<b>Figure ${tableNo}.</b> ${esc(V.mapCaption)}`;
+      $('#s3-highlights').innerHTML = V.highlights.map((h) => `<li>${esc(h)}</li>`).join('');
+      $('#s3-table-title').textContent = `Table ${tableNo}. ${V.tableCaption.replace(/\.$/, '')}`;
+      renderTable(V); renderChart(V);
+    }
+
+    function renderTable(V) {
+      const rows = V.rows.slice().sort((a, b) => {
+        const x = a[sortKey], y = b[sortKey];
+        if (x == null && y == null) return 0; if (x == null) return 1; if (y == null) return -1;
+        return (typeof x === 'string' ? x.localeCompare(y) : x - y) * sortDir;
+      });
+      const colIdx = [0, 2, 3, 4, 5, 6, 7, 8, 9];
+      const head = S3.columns.map(([lbl, full], i) => {
+        const k = colIdx[i];
+        const active = k === sortKey;
+        return `<th scope="col" class="${i ? 'num' : ''}" aria-sort="${active ? (sortDir > 0 ? 'ascending' : 'descending') : 'none'}">
+          <button type="button" data-k="${k}" title="${esc(full || lbl)}">${esc(lbl)}${active ? (sortDir > 0 ? ' ▲' : ' ▼') : ''}</button></th>`;
+      }).join('');
+      const d = V.decimals;
+      const body = rows.map((r) => `<tr class="${r[2] === 1 ? 'best' : ''}">
+          <td><span class="fam ${isGeo(r[1]) ? 'geo' : 'det'}" title="${esc(S3.families[r[1]])}">${esc(r[1])}</span>${esc(r[0])}${r[2] === 1 ? ' <span class="best-tag">Best</span>' : ''}</td>
+          <td class="num">${r[2]}</td>
+          ${[3, 4, 5, 6, 7, 8].map((k) => `<td class="num">${fmtN(r[k], k === 5 || k === 6 ? (cur === 'precip' ? 3 : 4) : d)}</td>`).join('')}
+          <td class="num ${r[9] < 0 ? 'neg' : ''}">${fmtN(r[9], cur === 'precip' ? 3 : 4)}</td>
+        </tr>`).join('');
+      $('#s3-table').innerHTML = `<caption class="sr-only">${esc(V.tableCaption)}</caption><thead><tr>${head}</tr></thead><tbody>${body}</tbody>`;
+      $$('#s3-table th button').forEach((b) => b.addEventListener('click', () => {
+        const k = +b.dataset.k;
+        sortDir = k === sortKey ? -sortDir : 1; sortKey = k; renderTable(V);
+      }));
+    }
+
+    function renderChart(V) {
+      const box = $('#s3-chart');
+      const rows = V.rows.slice().sort((a, b) => a[2] - b[2]);
+      const W = Math.max(280, box.clientWidth), narrow = W < 460;
+      const LBL = narrow ? 136 : 200, R = 14, ROW = 22, TOP = 6, AX = 24;
+      const H = TOP + rows.length * ROW + AX;
+      const vals = rows.map((r) => r[3]);
+      const span = Math.max(...vals) - Math.min(...vals);
+      const lo = Math.min(...vals) - span * 0.08, hi = Math.max(...vals) + span * 0.08;
+      const x = (v) => LBL + (v - lo) / (hi - lo) * (W - LBL - R);
+      const ticks = niceTicks(lo, hi, narrow ? 3 : 5);
+      const short = (s) => s.replace('Empirical Bayesian Kriging', 'EBK').replace('Ordinary Kriging', 'OK').replace('Radial Basis Functions', 'RBF')
+        .replace('Inverse Distance Weighted', 'IDW').replace('Global Polynomial Interpolation', 'GPI').replace('Completely regularized spline', 'Compl. reg. spline')
+        .replace('Inverse multiquadric', 'Inv. multiquadric').replace(' order', '');
+      let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Dot chart of RMSE for 14 interpolation methods, ${esc(V.label)}">`;
+      svg += `<g class="grid">${ticks.map((t) => `<line x1="${x(t)}" x2="${x(t)}" y1="${TOP}" y2="${H - AX}"/>`).join('')}</g>`;
+      svg += `<g class="axis">${ticks.map((t) => `<text x="${x(t)}" y="${H - AX + 15}" text-anchor="middle">${fmt(t)}</text>`).join('')}</g>`;
+      rows.forEach((r, i) => {
+        const cy = TOP + i * ROW + ROW / 2, best = r[2] === 1;
+        svg += `<g class="row" data-i="${i}"><rect class="row-bg" x="0" y="${cy - ROW / 2}" width="${W}" height="${ROW}" rx="5" fill="transparent"/>`;
+        svg += `<text class="row-label${best ? ' strong' : ''}" x="0" y="${cy + 4}">${esc(short(r[0]))}</text>`;
+        svg += `<line class="stem" x1="${LBL}" x2="${x(r[3])}" y1="${cy}" y2="${cy}"/>`;
+        svg += `<circle cx="${x(r[3])}" cy="${cy}" r="${best ? 6 : 5}" class="${isGeo(r[1]) ? 'geo' : 'det'}"/>`;
+        if (best) svg += `<text class="val" x="${x(r[3]) + 10}" y="${cy + 4}">${fmtPlain(r[3], V.decimals)} ${esc(V.unit)}</text>`;
+        svg += `<rect class="hit" x="0" y="${cy - ROW / 2}" width="${W}" height="${ROW}"/></g>`;
+      });
+      box.innerHTML = svg + '</svg>';
+      $$('.row', box).forEach((g) => {
+        const r = rows[+g.dataset.i];
+        const show = (e) => {
+          tip.innerHTML = `<b>${esc(r[0])}</b><span style="opacity:.75">${esc(S3.families[r[1]])} · rank ${r[2]}</span>` +
+            `<div class="kv"><span>RMSE</span><span>${fmtPlain(r[3], V.decimals)} ${esc(V.unit)}</span></div>` +
+            `<div class="kv"><span>Mean error</span><span>${fmtPlain(r[4], V.decimals)}</span></div>` +
+            (r[6] != null ? `<div class="kv"><span>RMSSE</span><span>${fmtPlain(r[6], V.decimals)}</span></div>` : '') +
+            `<div class="kv"><span>Error reduction</span><span>${fmtPlain(r[9], 2)}%</span></div>`;
+          tip.hidden = false;
+          const w = tip.offsetWidth, h = tip.offsetHeight;
+          let left = e.clientX + 14, top = e.clientY + 14;
+          if (left + w > innerWidth - 8) left = e.clientX - w - 14;
+          if (top + h > innerHeight - 8) top = e.clientY - h - 14;
+          tip.style.left = Math.max(8, left) + 'px'; tip.style.top = top + 'px';
+        };
+        g.addEventListener('mousemove', show);
+        g.addEventListener('mouseleave', hideTip);
+        g.addEventListener('click', (e) => { $$('.row', box).forEach((o) => o.classList.toggle('hl', o === g)); show(e); e.stopPropagation(); });
+      });
+    }
+    const fmtPlain = (v, d) => (v < 0 ? '−' : '') + Math.abs(v).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+
+    // crop fit against interpolated national ranges
+    function renderFit() {
+      const T = [25.395, 28.713], P = [1033.913, 4115.463];
+      const judge = (f, rng) => {
+        if (!f) return { cls: 'na', txt: 'Not assessed' };
+        if (/growing cycle/i.test(f.factor)) return { cls: 'na', txt: 'Growing-cycle criterion' };
+        const p = parseInterval(f.S1); if (!p) return { cls: 'na', txt: 'Not numeric' };
+        const a = Math.min(...p.map((s) => s[0])), b = Math.max(...p.map((s) => s[1]));
+        if (b < rng[0]) return { cls: 'bad', txt: 'Below range' };
+        if (a > rng[1]) return { cls: 'bad', txt: 'Above range' };
+        if (a <= rng[0] && b >= rng[1]) return { cls: 'ok', txt: 'Covers whole range' };
+        if (a >= rng[0] && b <= rng[1]) return { cls: 'ok', txt: 'Inside range' };
+        return { cls: 'part', txt: 'Partly overlaps' };
+      };
+      const icon = { ok: '✓', part: '◐', bad: '✕', na: '–' };
+      const cell = (j) => `<span class="fit ${j.cls}"><span aria-hidden="true">${icon[j.cls]}</span> ${j.txt}</span>`;
+      const rows = D.crops.map((c) => {
+        const t = c.factors.find((f) => /temperature/i.test(f.factor));
+        const r = c.factors.find((f) => /rainfall|precipitation/i.test(f.factor));
+        return `<tr><td><b>${esc(c.name)}</b></td>
+          <td class="num">${t ? esc(t.S1) + ' ' + esc(t.unit) : '—'}</td><td>${cell(judge(t, T))}</td>
+          <td class="num">${r ? esc(r.S1) + ' ' + esc(r.unit) : '—'}</td><td>${cell(judge(r, P))}</td></tr>`;
+      }).join('');
+      $('#s3-fit').innerHTML = `<thead><tr><th>Crop</th><th>S1 temperature</th><th>vs 25.4–28.7 °C</th><th>S1 rainfall</th><th>vs 1,034–4,115 mm</th></tr></thead><tbody>${rows}</tbody>`;
+    }
+
+    $$('#s3-var button').forEach((b) => b.addEventListener('click', () => {
+      cur = b.dataset.var; sortKey = 2; sortDir = 1;
+      $$('#s3-var button').forEach((x) => { x.classList.toggle('active', x === b); x.setAttribute('aria-pressed', x === b); });
+      render();
+    }));
+    $('#s3-dl').addEventListener('click', () => {
+      const V = S3.variables[cur];
+      const q = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+      const head = ['Model description', 'Family', 'Rank', 'RMSE', 'Mean error', 'Mean standardized error', 'Root mean square standardized error', 'Average standard error', 'Maximum absolute error', 'Percent error reduction'];
+      const lines = [head.map(q).join(',')].concat(V.rows.map((r) => r.map(q).join(',')));
+      const blob = new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+      const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: `study3_${cur === 'precip' ? 'annual_precipitation' : 'mean_temperature'}_interpolation_errors.csv` });
+      document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    });
+    const mdlg = $('#map-dialog');
+    $('#s3-map-btn').addEventListener('click', () => { $('#map-big').src = $('#s3-map').src; $('#map-big').alt = $('#s3-map').alt; mdlg.showModal(); });
+    $('#map-close').addEventListener('click', () => mdlg.close());
+    mdlg.addEventListener('click', (e) => { if (e.target === mdlg) mdlg.close(); });
+    let rt3; addEventListener('resize', () => { clearTimeout(rt3); rt3 = setTimeout(() => renderChart(S3.variables[cur]), 140); });
+    render(); renderFit();
+  }
 })();
