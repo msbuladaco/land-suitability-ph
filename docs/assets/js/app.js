@@ -373,18 +373,18 @@
 
   /* ---------------- team ---------------- */
   const TEAM = [
-    ['Marcial S. Buladaco II', 'Project Leader · Study Leader, Studies 3–5'],
-    ['Nicola Louise T. Timbas', 'Study Leader, Study 2'],
-    ['Jessabel B. Magtoltol', 'Study Leader, Study 1 · Project Staff, Studies 3–4'],
-    ['Hiyasmin Rose L. Benzon', 'Co-Study Leader, Study 1'],
-    ['Darryl Nelo S. Aguila', 'Project Staff, Study 2'],
-    ['Sophia Alelie C. Bugia', 'Project Staff, Study 5']
+    ['Marcial S. Buladaco II', 'Project Leader', 'Study Leader, Studies 3–5', 'buladaco'],
+    ['Nicola Louise T. Timbas', 'Study Leader', 'Study 2', 'timbas'],
+    ['Jessabel B. Magtoltol', 'Study Leader', 'Study 1 · Project Staff, Studies 3–4', 'magtoltol'],
+    ['Hiyasmin Rose L. Benzon', 'Co-Study Leader', 'Study 1', 'benzon'],
+    ['Darryl Nelo S. Aguila', 'Project Staff', 'Study 2', 'aguila'],
+    ['Sophia Alelie C. Bugia', 'Project Staff', 'Study 5', 'bugia']
   ];
-  $('#team-grid').innerHTML = TEAM.map(([n, r]) => {
-    const parts = n.replace(/\b(II|Jr\.)\b/g, '').trim().split(/\s+/);
-    const ini = parts[0][0] + parts[parts.length - 1][0];
-    return `<div class="person"><span class="avatar" aria-hidden="true">${ini}</span><div><b>${esc(n)}</b><span>${esc(r)}</span><span>CAFS · ASI · DSS</span></div></div>`;
-  }).join('');
+  $('#team-grid').innerHTML = TEAM.map(([n, role, detail, photo]) => `
+    <figure class="person">
+      <div class="person-photo"><img src="assets/img/team/${photo}.jpg" alt="Portrait of ${esc(n)}" loading="lazy" width="480" height="600"></div>
+      <figcaption><b>${esc(n)}</b><span class="role">${esc(role)}</span><span>${esc(detail)}</span><span class="unit">CAFS · ASI · Division of Soil Science</span></figcaption>
+    </figure>`).join('');
 
   /* ---------------- credits ---------------- */
   const LABEL = { hero: 'Hero', terraces: 'Project section', 'study-1': 'Study 1', 'study-2': 'Study 2', 'study-3': 'Study 3' };

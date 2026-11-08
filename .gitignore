@@ -12,3 +12,8 @@ Thumbs.db
 .DS_Store
 desktop.ini
 .vscode/
+
+# Original team photos (resized copies live in docs/assets/img/team)
+/*.png
+/*.jpg
+/*.jpeg
