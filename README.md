@@ -8,6 +8,17 @@ This repository hosts the project showcase website. It currently publishes the r
 
 ## Website features
 
+The site has a home page plus one page per study:
+
+| Page | Content |
+|---|---|
+| `index.html` | Project overview, objectives, how the studies connect, study cards, team |
+| `study-1.html` | Crop compendium, cross-crop comparison, methods, references |
+| `study-2.html` | Study plan and schedule (work in progress) |
+| `study-3.html` | Interpolated climate surfaces, error tables, scientific discussion |
+| `study-4.html` | Study plan and schedule (work in progress) |
+| `study-5.html` | Study plan and schedule (work in progress) |
+
 - **Crop compendium**: 17 crop profiles (lowland and upland rice, corn, coffee, cacao, coconut, sugarcane, mango, banana, pineapple, cabbage, carrot, tomato, onion, cassava, sweet potato, potato). Each profile has its S1–N2 requirement table, compiler notes and sources, a summary, and the full technical discussion.
 - **Cross-crop comparison**: an interactive range chart, with a table view, for pH, temperature, rainfall, soil depth, slope, organic carbon, CEC, base saturation, salinity and dry-season length.
 - **Study 3 climate surfaces**: EBK maps of annual precipitation and mean temperature, recreated cross-validation tables (sortable, downloadable), an RMSE chart, a scientific discussion, and a check of each crop's S1 climate range against the interpolated ranges.
@@ -18,11 +29,13 @@ This repository hosts the project showcase website. It currently publishes the r
 
 ```
 docs/                       ← GitHub Pages root
-├── index.html
+├── index.html              ← home
+├── study-1.html … study-5.html
 └── assets/
     ├── css/style.css
-    ├── js/app.js           ← UI, chart, dialog
+    ├── js/app.js           ← shared header/footer, study list, page modules
     ├── js/data.js          ← compendium data (generated from Study 1 outputs)
+    ├── js/study3.js        ← Study 3 error tables (re-typed from the progress report)
     ├── data/crop_requirements_17_crops.csv
     └── img/                ← photos from Wikimedia Commons (credits in site footer)
 ```
