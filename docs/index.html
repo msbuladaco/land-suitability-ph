@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Land Suitability PH</title>
+<meta name="description" content="Development of land use suitability models using integrated MCDA, GIS, and RS approach for major crops in the Philippines. Study 1: Compendium of Land Utilization Type Requirements for 17 major crops.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f3d2e'/%3E%3Cpath d='M6 22c5-1 8-4 10-9 2 5 5 8 10 9' stroke='%23d6a21e' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3Cpath d='M6 26h20' stroke='%233fae80' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="nav" id="top">
+  <div class="nav-inner">
+    <a class="brand" href="#top" aria-label="Land Suitability PH, back to top">
+      <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0f3d2e"/><path d="M6 22c5-1 8-4 10-9 2 5 5 8 10 9" stroke="#d6a21e" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M6 26h20" stroke="#3fae80" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>Land Suitability <b>PH</b></span>
+    </a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="navlinks" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="navlinks" class="nav-links">
+      <a href="#project">Project</a>
+      <a href="#studies">Studies</a>
+      <a href="#compendium">Study 1</a>
+      <a href="#compare">Compare</a>
+      <a href="#methods">Methods</a>
+      <a href="#references">References</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <img class="hero-img" src="assets/img/hero.jpg" alt="Aerial view of the Batad rice terraces in Ifugao, Philippines" fetchpriority="high">
+  <div class="hero-shade"></div>
+  <div class="hero-content wrap">
+    <p class="eyebrow">UPLB · College of Agriculture and Food Science · Agricultural Systems Institute · Division of Soil Science</p>
+    <h1>Matching Philippine land to the crops it can sustain</h1>
+    <p class="lede">Development of land use suitability models using an integrated <abbr title="Multi-Criteria Decision Analysis">MCDA</abbr>, <abbr title="Geographic Information Systems">GIS</abbr>, and <abbr title="Remote Sensing">RS</abbr> approach for major crops in the Philippines.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#compendium">Explore the crop compendium</a>
+      <a class="btn btn-ghost" href="#studies">See all five studies</a>
+    </div>
+  </div>
+  <p class="hero-credit">Batad Rice Terraces, Ifugao · Photo: CEphoto, Uwe Aranas (CC BY-SA 4.0)</p>
+</section>
+
+<section class="stats" aria-label="Study 1 at a glance">
+  <div class="wrap stats-grid">
+    <div class="stat"><span class="stat-num">17</span><span class="stat-lbl">major crops profiled</span></div>
+    <div class="stat"><span class="stat-num">173</span><span class="stat-lbl">crop–factor records</span></div>
+    <div class="stat"><span class="stat-num">15</span><span class="stat-lbl">diagnostic land characteristics</span></div>
+    <div class="stat"><span class="stat-num">5</span><span class="stat-lbl">FAO suitability classes (S1–N2)</span></div>
+    <div class="stat"><span class="stat-num" id="stat-refs">74</span><span class="stat-lbl">cited sources</span></div>
+  </div>
+</section>
+
+<!-- ============ PROJECT ============ -->
+<section id="project" class="section">
+  <div class="wrap two-col">
+    <div>
+      <p class="kicker">The project</p>
+      <h2>Why land suitability matters</h2>
+      <p>Land evaluation is “the process of assessment of land performance when used for specific purposes” (FAO, 1976). Land suitability analysis assesses the inherent capacity of a land unit, here a soil type, to support a specific use. Matching land characteristics to crop requirements helps farmers choose crops that fit their soil, climate and terrain, which raises productivity, lowers risk and supports food security.</p>
+      <p>The project builds suitability models for <strong>17 major crops</strong> at the provincial level. It combines a validated compendium of crop requirements with satellite-derived land cover, interpolated climate surfaces, soil and topographic layers, and expert-derived criteria weights (AHP / Fuzzy-AHP), then overlays them in ArcGIS Pro.</p>
+      <div class="meta-grid">
+        <div><span>Program</span>Enhancing Soil Resources Program, DSS–ASI, CAFS</div>
+        <div><span>Duration</span>Jan 2025 – Dec 2027</div>
+        <div><span>Research type</span>Applied research · Core funded</div>
+        <div><span>SDG</span>Zero Hunger · Food Security &amp; Sovereignty</div>
+      </div>
+    </div>
+    <figure class="project-fig">
+      <img src="assets/img/terraces.jpg" alt="Banaue rice terraces carved into a green mountainside" loading="lazy">
+      <figcaption>Banaue Rice Terraces · CEphoto, Uwe Aranas (CC BY-SA 3.0)</figcaption>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <h3 class="sub">Objectives</h3>
+    <ol class="objectives">
+      <li>Establish a validated compendium of crop requirements for major crops in the Philippines.</li>
+      <li>Generate land cover and NDVI maps at the provincial level using appropriate image classification techniques.</li>
+      <li>Generate climatic criteria maps using the best-fit interpolation method.</li>
+      <li>Generate soil and topographic criteria maps using secondary data and GIS tools.</li>
+      <li>Derive criteria and sub-criteria weights using AHP or Fuzzy-AHP.</li>
+      <li>Generate actual and potential suitability maps for the major crops at the provincial level.</li>
+      <li>Recommend ways to address the limitations to productivity and suitability.</li>
+    </ol>
+
+    <h3 class="sub">How the five studies fit together</h3>
+    <div class="flow" role="img" aria-label="Schematic: Study 1 crop requirements, Study 2 satellite images, and Study 3 climate, elevation and soil data feed criteria layers; Study 4 AHP weights and these layers feed Study 5 thematic mapping, overlay analysis, and suitability classification S1 to N2.">
+      <div class="flow-col">
+        <div class="flow-tag">Datasets &amp; layers</div>
+        <div class="flow-node s1 done"><b>Study 1</b>Crop requirements<small>Validation &amp; standardization of class thresholds</small></div>
+        <div class="flow-node s2"><b>Study 2</b>Satellite images<small>Land cover &amp; vegetation (NDVI) criteria</small></div>
+        <div class="flow-node s3"><b>Study 3</b>Weather, DEM &amp; soil data<small>Climate, topographic &amp; soil criteria</small></div>
+      </div>
+      <div class="flow-arrow" aria-hidden="true"><svg viewBox="0 0 40 24"><path d="M2 12h32m-8-8 8 8-8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="flow-col">
+        <div class="flow-tag">Weighting</div>
+        <div class="flow-node s4"><b>Study 4</b>AHP / Fuzzy-AHP<small>Criteria &amp; sub-criteria weights, CR ≤ 0.10</small></div>
+      </div>
+      <div class="flow-arrow" aria-hidden="true"><svg viewBox="0 0 40 24"><path d="M2 12h32m-8-8 8 8-8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="flow-col">
+        <div class="flow-tag">Modeling</div>
+        <div class="flow-node s5"><b>Study 5</b>Thematic mapping → overlay analysis<small>Actual &amp; potential suitability</small>
+          <span class="class-row"><i class="c-S1">S1</i><i class="c-S2">S2</i><i class="c-S3">S3</i><i class="c-N1">N1</i><i class="c-N2">N2</i></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STUDIES ============ -->
+<section id="studies" class="section alt">
+  <div class="wrap">
+    <p class="kicker">Research components</p>
+    <h2>Five studies, one suitability model</h2>
+    <p class="section-lede">Study 1 is complete and its results are published below. The remaining studies are in progress; their results will be added to this site as they are finalized.</p>
+    <div class="study-grid" id="study-grid"></div>
+  </div>
+</section>
+
+<!-- ============ STUDY 1 ============ -->
+<section id="compendium" class="section">
+  <div class="wrap">
+    <p class="kicker">Study 1 · Results</p>
+    <h2>Compendium of Land Utilization Type Requirements</h2>
+    <div class="two-col narrow-right">
+      <div>
+        <p>Starting from Sys et al. (1993), the team searched scholarly databases, journals and government publications for crop requirements, assessed each source’s credibility, and delineated the value ranges for every land characteristic into FAO suitability classes. The result is a compendium of class thresholds for 17 major crops covering climate, soil physical and chemical properties, and terrain.</p>
+        <p>Nested class envelopes from the source workbook were converted into explicit, non-overlapping intervals that can be used directly to reclassify GIS layers. Where a source gives only one “N” class, the split between N1 and N2 is not inferred and is marked <span class="nd">ND</span>.</p>
+        <p class="lead-by">Study leader: <strong>Jessabel B. Magtoltol</strong> · Co-study leader: <strong>Hiyasmin Rose L. Benzon</strong></p>
+      </div>
+      <aside class="legend-card" aria-label="FAO suitability classes">
+        <h3>FAO suitability classes</h3>
+        <ul class="legend">
+          <li><i class="c-S1">S1</i><div><b>Highly suitable</b>No significant limitations, or only minor ones.</div></li>
+          <li><i class="c-S2">S2</i><div><b>Moderately suitable</b>Moderate limitations reduce productivity or raise inputs.</div></li>
+          <li><i class="c-S3">S3</i><div><b>Marginally suitable</b>Severe limitations; use is only marginally justified.</div></li>
+          <li><i class="c-N1">N1</i><div><b>Currently not suitable</b>Limitations may be surmountable, but not at acceptable cost today.</div></li>
+          <li><i class="c-N2">N2</i><div><b>Permanently not suitable</b>Limitations preclude sustained use.</div></li>
+        </ul>
+      </aside>
+    </div>
+
+    <div class="toolbar" role="search">
+      <div class="chips" id="group-chips" role="group" aria-label="Filter crops by group"></div>
+      <label class="search">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input id="crop-search" type="search" placeholder="Search crops" aria-label="Search crops">
+      </label>
+    </div>
+    <div class="crop-grid" id="crop-grid"></div>
+    <p class="downloads">
+      <a class="btn btn-outline" href="assets/data/crop_requirements_17_crops.csv" download>Download all 173 records (CSV)</a>
+    </p>
+  </div>
+</section>
+
+<!-- ============ COMPARE ============ -->
+<section id="compare" class="section alt">
+  <div class="wrap">
+    <p class="kicker">Study 1 · Cross-crop view</p>
+    <h2>Compare requirements across crops</h2>
+    <p class="section-lede">Choose a land characteristic to see where each crop’s class boundaries sit. Bands run from the S1 core outward through S2 and S3. Hover or tap a band for its exact interval.</p>
+    <div class="compare-controls">
+      <label>Land characteristic
+        <select id="factor-select"></select>
+      </label>
+      <label>Sort by
+        <select id="sort-select">
+          <option value="group">Crop group</option>
+          <option value="s1">S1 position</option>
+          <option value="name">Name</option>
+        </select>
+      </label>
+      <div class="seg" role="group" aria-label="View">
+        <button type="button" class="active" data-view="chart" aria-pressed="true">Chart</button>
+        <button type="button" data-view="table" aria-pressed="false">Table</button>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-head">
+        <div>
+          <h3 id="chart-title">Soil pH</h3>
+          <p id="chart-sub" class="muted"></p>
+        </div>
+        <ul class="legend inline" aria-label="Chart legend">
+          <li><i class="c-S1">S1</i>Highly</li>
+          <li><i class="c-S2">S2</i>Moderately</li>
+          <li><i class="c-S3">S3</i>Marginally</li>
+        </ul>
+      </div>
+      <div id="chart" class="chart"></div>
+      <div id="chart-table" class="table-wrap" hidden></div>
+      <p class="chart-note muted" id="chart-note"></p>
+    </div>
+    <div class="tooltip" id="tooltip" role="status" hidden></div>
+  </div>
+</section>
+
+<!-- ============ METHODS ============ -->
+<section id="methods" class="section">
+  <div class="wrap">
+    <p class="kicker">Methodology</p>
+    <h2>How the compendium was built</h2>
+    <div class="steps">
+      <div class="step"><span>1</span><h3>Base framework</h3><p>Crop requirement tables of Sys et al. (1993) and the FAO Framework for Land Evaluation (FAO, 1976; 2007) set the structure of factors and classes.</p></div>
+      <div class="step"><span>2</span><h3>Literature search</h3><p>Scholarly databases, journals and agency publications in agriculture, agronomy, plant science and crop production were searched for each crop.</p></div>
+      <div class="step"><span>3</span><h3>Source appraisal</h3><p>Each source was assessed for credibility and quality. Philippine field studies and BSWM suitability products were prioritized where available.</p></div>
+      <div class="step"><span>4</span><h3>Class delineation</h3><p>Value ranges per parameter were delineated into S1–N2 and converted from nested envelopes into explicit, GIS-ready intervals.</p></div>
+      <div class="step"><span>5</span><h3>Independent validation</h3><p>FAO GAEZ, ECOCROP, FAO lowland-rice examples, BSWM maps and recent studies served as a quality-control layer. Disagreements are flagged, not averaged.</p></div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <h3 class="sub">FAO land suitability classification</h3>
+        <div class="table-wrap">
+          <table class="fao-table">
+            <thead><tr><th>Order</th><th>Class</th><th>Suitability</th><th>Rating (%)</th></tr></thead>
+            <tbody>
+              <tr><td rowspan="3">S</td><td><i class="c-S1">S1</i></td><td>Highly suitable</td><td>85–100</td></tr>
+              <tr><td><i class="c-S2">S2</i></td><td>Moderately suitable</td><td>60–85</td></tr>
+              <tr><td><i class="c-S3">S3</i></td><td>Marginally suitable</td><td>40–60</td></tr>
+              <tr><td rowspan="2">N</td><td><i class="c-N1">N1</i></td><td>Currently not suitable</td><td>25–40</td></tr>
+              <tr><td><i class="c-N2">N2</i></td><td>Permanently not suitable</td><td>0–25</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="muted small">Source: FAO (1976); Sys et al. (1991).</p>
+      </div>
+      <div>
+        <h3 class="sub">Application cautions</h3>
+        <ul class="cautions">
+          <li>These are screening thresholds, not yield guarantees. Cultivar, planting season, irrigation, fertilization, pests and data resolution all affect real suitability.</li>
+          <li>Annual climate means can hide seasonal extremes. Cabbage, carrot, onion and potato should be read against the actual growing season or highland environment.</li>
+          <li>Coffee combines Arabica and Robusta. Mapping should separate the two where elevation and temperature data allow.</li>
+          <li>Lowland rice reverses the usual drainage preference: controlled ponding on fine-textured, slowly permeable soils is favorable for paddy.</li>
+          <li>N1 vs N2 depends partly on management and economics. Acidity, salinity or slope may improve; bedrock depth or extreme terrain usually cannot.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REFERENCES ============ -->
+<section id="references" class="section alt">
+  <div class="wrap">
+    <p class="kicker">Evidence base</p>
+    <h2>References</h2>
+    <label class="search wide">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input id="ref-search" type="search" placeholder="Search by author, crop, or keyword" aria-label="Search references">
+    </label>
+    <p class="muted small" id="ref-count"></p>
+    <ol class="refs" id="ref-list"></ol>
+  </div>
+</section>
+
+<!-- ============ TEAM ============ -->
+<section id="team" class="section">
+  <div class="wrap">
+    <p class="kicker">People</p>
+    <h2>Project team</h2>
+    <div class="team-grid" id="team-grid"></div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <div>
+      <p class="brand light">Land Suitability <b>PH</b></p>
+      <p>Division of Soil Science, Agricultural Systems Institute, College of Agriculture and Food Science, University of the Philippines Los Baños.</p>
+      <p class="small">Crop thresholds are screening-level requirements compiled from the literature. Calibrate locally with soil survey, cultivar and management data before operational use.</p>
+    </div>
+    <div>
+      <details class="credits">
+        <summary>Photo credits (Wikimedia Commons)</summary>
+        <ul id="credit-list"></ul>
+      </details>
+    </div>
+  </div>
+  <div class="wrap footer-bottom small">© 2025–2027 UPLB CAFS–ASI Division of Soil Science · <a href="#top">Back to top</a></div>
+</footer>
+
+<!-- Crop detail dialog -->
+<dialog id="crop-dialog" class="crop-dialog" aria-labelledby="dlg-title">
+  <div class="dlg-hero">
+    <img id="dlg-img" src="" alt="">
+    <button class="dlg-close" id="dlg-close" aria-label="Close crop details">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="dlg-hero-text">
+      <span class="pill" id="dlg-group"></span>
+      <h2 id="dlg-title"></h2>
+      <p id="dlg-sci"></p>
+    </div>
+  </div>
+  <div class="dlg-body">
+    <div class="tabs" role="tablist" aria-label="Crop detail sections">
+      <button role="tab" aria-selected="true" aria-controls="tab-req" id="t-req">Requirements</button>
+      <button role="tab" aria-selected="false" aria-controls="tab-sum" id="t-sum" tabindex="-1">Summary</button>
+      <button role="tab" aria-selected="false" aria-controls="tab-disc" id="t-disc" tabindex="-1">Technical discussion</button>
+    </div>
+    <div role="tabpanel" id="tab-req" aria-labelledby="t-req"></div>
+    <div role="tabpanel" id="tab-sum" aria-labelledby="t-sum" hidden></div>
+    <div role="tabpanel" id="tab-disc" aria-labelledby="t-disc" hidden></div>
+  </div>
+</dialog>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

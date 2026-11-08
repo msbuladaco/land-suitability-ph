@@ -1,0 +1,14 @@
+# Local tooling
+.claude/
+
+# Source study documents (kept out of the public repo; the site uses docs/assets/data instead)
+*.pdf
+*.docx
+*.xlsx
+~$*
+
+# OS / editor
+Thumbs.db
+.DS_Store
+desktop.ini
+.vscode/
